@@ -43,17 +43,12 @@ const Register = () => {
   };
 
   return (
-    <div className="lg:flex md:flex justify-between">
+    <div className="lg:flex lg:flex-row md:flex-row md:flex justify-between">
       <div className="lg:bg-[#165ECA] md:bg-[#165ECA] lg:p-[5rem] md:lg:p-[5rem] lg:w-[100%] lg:h-[100vh] md:w-[100%] md:h-[100vh] flex flex-col justify-center items-center">
         <img
-          className="hidden lg:block md:block lg:max-w-[80%] md:max-w-[80%]"
-          src="/car-acc.png"
-          alt="car"
-        />
-        <img
-          className="w-[100%] hover:hue-rotate-30"
-          src="/car.png"
-          alt="car"
+          className="w-[70%] lg:w-[90%] md:w-[90%]"
+          src="/singup-img.png"
+          alt="user"
         />
       </div>
       <div className="lg:mt-[5rem] md:mt-[5rem] p-11 w-[100%]">

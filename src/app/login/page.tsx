@@ -8,6 +8,7 @@ import { Metadata } from 'next'
 import React, { useState } from 'react'
 import { LoaderIcon } from 'react-hot-toast';
 import { handleLogin } from '@/actions/handleLogin';
+import { useRouter } from 'next/navigation';
 
 const metadata: Metadata = {
     title: 'Login',
@@ -17,6 +18,7 @@ const metadata: Metadata = {
 const Login = () => {
   const style = "mb-5 shadow-sm outline-none border border-black p-3";
   const [isLoading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleValidation = (values: User) => {
     const errors: ErrorValues = {};
@@ -54,6 +56,7 @@ const Login = () => {
                 () => setLoading(true),
                 () => setLoading(false)
               );
+              router.push('/dashboard')
             }}
             validate={handleValidation}
         >
@@ -71,6 +74,9 @@ const Login = () => {
               Sign in
               {isLoading ? <LoaderIcon /> : null}
             </button>
+            <a href='/forgot-password' className='mt-3 text-end font-bold hover:text-gray-400 hover:italic'>
+              Forgot password?
+            </a>
             </Form>
         </Formik>
       </div>

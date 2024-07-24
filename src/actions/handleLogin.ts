@@ -5,7 +5,8 @@ import toast from "react-hot-toast";
 export const handleLogin = async (values: User, setLoadingStart: () => void, setLoadingEnd: () => void) => {
     setLoadingStart();
     try{
-      await signIn(values);
+      const res = await signIn(values);
+      console.log(res)
       toast.success("Login sucessful", { duration: 2500 });
     } catch(error) {
       toast.error("Login failed. Please check your credentials and try again", { duration: 2500 });

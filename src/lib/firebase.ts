@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
+import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,6 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // ----- LOGIN AND REGISTER FUNCIONS -----
 // Sign in with email y password
@@ -28,4 +30,12 @@ export const signIn = async (values: User) => {
 // Register user
 export const registerUser = async (values: User) => {
   await createUserWithEmailAndPassword(auth, values.email, values.password);
+}
+
+// Docs
+
+// Add document in a collection
+export const addDocument = (path: string, data: any) => {
+  data.createdAt = serverTimestamp();
+  return addDoc(collection(db, path), data);
 }
