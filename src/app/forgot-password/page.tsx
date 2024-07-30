@@ -5,9 +5,10 @@ import { ErrorValues } from '@/interfaces/errorValues';
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { Metadata } from 'next'
 import React, { useState } from 'react'
-import { LoaderIcon } from 'react-hot-toast';
+import toast, { LoaderIcon } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import './style.css';
+import { passwedRecover } from '@/lib/firebase';
 
 const metadata: Metadata = {
     title: 'Forgot password',
@@ -15,11 +16,11 @@ const metadata: Metadata = {
 }
 
 const ForgotPassword = () => {
-  const style = "mb-5 shadow-sm outline-none border border-black p-3";
+  const style = "shadow-sm border-none mb-5 shadow-sm outline-none border border-black p-3";
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleValidation = (values: User) => {
+  const handleValidation = (values: { email: string }) => {
     const errors: ErrorValues = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -34,13 +35,20 @@ const ForgotPassword = () => {
 
   return (
     <div className="lg:flex md:flex justify-between p-10" id='forgot-passwd-container'>
-      <div className='lg:mt-[5rem] md:mt-[5rem] p-11 w-[100%] bg-[#165ECA]'>
+      <div className='mt-[8rem] lg:mt-[5rem] md:mt-[8rem] p-11 w-[100%] bg-[#165ECA]'>
         <h1 className='text-2xl font-bold mb-3 text-slate-100'>Please enter your email to recover your password</h1>
         <Formik
             initialValues={{ email: "" }}
-            onSubmit={(values) => {
-              console.log(values);
+            onSubmit={(values, { resetForm }) => {
+              try{
+                passwedRecover(values);
+                toast.success('Password reset link sent. Please check your email', { duration: 2500});
+                resetForm();                
+              } catch (error: any) {
+                toast.error(error.message, { duration: 2500});
+              }
             }}
+            validate={handleValidation}
         >
             <Form className='flex flex-col'>
                 <Field className={style} placeholder="Email" name="email" type="email" />

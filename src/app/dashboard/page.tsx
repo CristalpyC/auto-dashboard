@@ -1,12 +1,14 @@
-import { ActionComponents } from '@/components/BasicComponents';
 import { Menu } from '@/components/Menu'
-import TableComponent from '@/components/Table';
+import TableComponent from '@/components/dashboard-components/Table';
 import './style.css';
+import { ActionComponents } from '@/components/dashboard-components/BasicComponents';
 
 const Dashboard = () => {
   return (
     <div id='dashboard-container'>
-        <Menu />
+        <Menu>
+          <p>Username</p>
+        </Menu>
         <div className='mt-5'>
             <ActionComponents />
             <TableComponent />

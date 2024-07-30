@@ -19,6 +19,7 @@ const Login = () => {
   const style = "mb-5 shadow-sm outline-none border border-black p-3";
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const nav = router.push('/dashboard');
 
   const handleValidation = (values: User) => {
     const errors: ErrorValues = {};
@@ -54,9 +55,9 @@ const Login = () => {
               handleLogin(
                 values,
                 () => setLoading(true),
-                () => setLoading(false)
+                () => setLoading(false),
+                nav
               );
-              router.push('/dashboard')
             }}
             validate={handleValidation}
         >

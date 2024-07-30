@@ -2,7 +2,7 @@
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,13 +27,18 @@ export const signIn = async (values: User) => {
     await signInWithEmailAndPassword(auth, values.email, values.password);
 }
 
+// Password recovering
+export const passwedRecover = async (values: { email: string} ) => {
+  const res = await sendPasswordResetEmail(auth, values.email);
+  console.log(res)
+}
+
 // Register user
 export const registerUser = async (values: User) => {
   await createUserWithEmailAndPassword(auth, values.email, values.password);
 }
 
-// Docs
-
+// -------DOCUMENT-------
 // Add document in a collection
 export const addDocument = (path: string, data: any) => {
   data.createdAt = serverTimestamp();
