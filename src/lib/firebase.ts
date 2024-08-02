@@ -2,7 +2,7 @@
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
-import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,18 +24,26 @@ const db = getFirestore(app);
 // ----- LOGIN AND REGISTER FUNCIONS -----
 // Sign in with email y password
 export const signIn = async (values: User) => {
-    await signInWithEmailAndPassword(auth, values.email, values.password);
+    const res = await signInWithEmailAndPassword(auth, values.email, values.password);
+    //res.user.uid
+    return res.user
 }
 
 // Password recovering
 export const passwedRecover = async (values: { email: string} ) => {
   const res = await sendPasswordResetEmail(auth, values.email);
-  console.log(res)
+  //console.log(res)
 }
 
 // Register user
 export const registerUser = async (values: User) => {
-  await createUserWithEmailAndPassword(auth, values.email, values.password);
+  const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+  const user = userCredential.user;
+
+  //update profile, to include the user name
+  await updateProfile(user, {
+    displayName: values.name
+  });
 }
 
 // -------DOCUMENT-------

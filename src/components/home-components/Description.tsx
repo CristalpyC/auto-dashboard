@@ -1,3 +1,7 @@
+"use client"
+import { Zoom } from "react-awesome-reveal";
+import { DirectionAwareHoverDemo } from "../HoverCard";
+
 export const Description = () => {
   return (
     <div className="p-11 bg-[#EAF0FF] flex flex-col lg:flex-row lg:gap-32 justify-center items-center lg:justify-between">
@@ -20,10 +24,9 @@ export const Description = () => {
         </p>
       </div>
 
-      <div className="w-[100%] mt-11 flex flex-col justify-center items-center">
-        <img src="car-dealership-runs-a-credit-check.avif" alt="check" className="ease-in-out duration-75 hover:scale-75 w-[70%] lg:w-[80%] mb-5 ml-14"/>
-        <img src="dealer-loyalty.jpg" alt="business" className="ease-in-out duration-75 hover:scale-75 w-[70%] lg:w-[80%]"/>
-      </div>
+      <Zoom>
+          <DirectionAwareHoverDemo />
+      </Zoom>
     </div>
   )
 }

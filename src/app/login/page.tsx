@@ -18,8 +18,10 @@ const metadata: Metadata = {
 const Login = () => {
   const style = "mb-5 shadow-sm outline-none border border-black p-3";
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<string>('');
+
   const router = useRouter();
-  const nav = router.push('/dashboard');
+  //const nav = router.push('/dashboard');
 
   const handleValidation = (values: User) => {
     const errors: ErrorValues = {};
@@ -56,8 +58,9 @@ const Login = () => {
                 values,
                 () => setLoading(true),
                 () => setLoading(false),
-                nav
-              );
+                () => setUserInfo(userInfo),
+                router.push('/dashboard')
+              );        
             }}
             validate={handleValidation}
         >

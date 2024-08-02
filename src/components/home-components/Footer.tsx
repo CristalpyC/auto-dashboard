@@ -1,5 +1,6 @@
 'use client'
 import { ContactForm } from "../ContactForm"
+import { Fade } from "react-awesome-reveal";
 
 export const Footer = () => {
   const style ='w-[15vw] md:w-[3rem] lg:w-[3rem] lg:h-[3rem] md:h-[3rem] ease-in-out duration-2s hover:scale-75'
@@ -25,7 +26,9 @@ export const Footer = () => {
           <ContactForm />
         </div>
       </div>
-      <p className="text-[#0e0c90a3] font-medium mt-5 text-center mb-3 text-[3.2vmin]">{`Copyright ©${year} | By Cristal Melissa Tavárez Novas`}</p>
+      <Fade>
+        <p className="text-[#0e0c90a3] font-medium mt-5 text-center mb-3 text-[3.2vmin]">{`Copyright ©${year} | By Cristal Melissa Tavárez Novas`}</p>
+      </Fade>
       </>
   )
 }

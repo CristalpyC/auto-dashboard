@@ -1,13 +1,13 @@
 import { User } from "@/interfaces/user";
 import { signIn } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-export const handleLogin = async (values: User, setLoadingStart: () => void, setLoadingEnd: () => void, router: any) => {
+export const handleLogin = async (values: User, setLoadingStart: () => void, setLoadingEnd: () => void, setUser: (res: any) => void, router?: any) => {
     setLoadingStart();
     try{
       const res = await signIn(values);
-      console.log(res)
+      localStorage.setItem('userInfo', JSON.stringify(res));
+
       toast.success("Login sucessful", { duration: 2500 });
       {router}
     } catch(error) {
