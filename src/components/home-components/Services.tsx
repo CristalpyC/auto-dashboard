@@ -8,7 +8,7 @@ export const Services = () => {
   ];
 
   return (
-    <div className="mt-3 flex flex-col lg:flex-row md:flex-row justify-center items-center bg-[#EAF0FF] p-11">
+    <div className="flex flex-col lg:flex-row md:flex-row justify-center items-center bg-[#EAF0FF] p-11">
       {items.map((item) => (
         <div key={item.id} className="w-[100%] text-center">
           <img src={item.img} alt={item.title} className={style}/>

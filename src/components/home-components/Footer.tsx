@@ -8,8 +8,8 @@ export const Footer = () => {
 
   return (
     <>
-      <div className="p-11 flex flex-col-reverse lg:flex-row md:flex-row items-center lg:justify-between md:justify-between gap-11">
-        
+      <img src="top-wave.svg" alt="top wave" />
+      <div className="px-11 flex flex-col-reverse lg:flex-row md:flex-row items-center lg:justify-between md:justify-between gap-11">
         <div className="w-[100%]">
           <h2 className="text-[#414A7D] text-[4vmin] text-center lg:text-left md:text-left mb-4">Dealerw</h2>
           <hr className="border-0 h-[1px] bg-black"/>
