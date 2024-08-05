@@ -1,10 +1,10 @@
+// Dashboard page
 "use client"
 import { Menu } from '@/components/Menu'
 import TableComponent from '@/components/dashboard-components/Table';
 import './style.css';
 import { ActionComponents } from '@/components/dashboard-components/BasicComponents';
-import Avatar from '@mui/material/Avatar';
-import { Scale } from 'lucide-react';
+import { DropdownMenuDemo } from '@/components/dashboard-components/DropDownMenu';
 
 const Dashboard = () => {
     //data
@@ -13,27 +13,13 @@ const Dashboard = () => {
 
     if (data){
       user = JSON.parse(data);
-      //console.log()
     }
 
+    //console.log(user)
   return (
     <div id='dashboard-container'>
         <Menu>
-            <div className='flex gap-3'>
-              <Avatar
-                alt="Remy Sharp"
-                src="https://www.simplilearn.com/ice9/free_resources_article_thumb/how_to_become_A_programmer.jpg"
-                sx={{ 
-                  width: 40, 
-                  height: 40,
-                  transition: 'ease-in-out',
-                  duration: '3s',
-                  '&:hover': {
-                  transform: 'Scale(1.2)'
-                }
-                }}
-              />
-            </div>
+          <DropdownMenuDemo />
         </Menu>
         <div className='mt-5'>
             <ActionComponents />

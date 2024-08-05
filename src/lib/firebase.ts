@@ -1,8 +1,10 @@
+// Firebase functions
 // Import the functions you need from the SDKs you need
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,6 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 // ----- LOGIN AND REGISTER FUNCIONS -----
 // Sign in with email y password
@@ -51,4 +54,24 @@ export const registerUser = async (values: User) => {
 export const addDocument = (path: string, data: any) => {
   data.createdAt = serverTimestamp();
   return addDoc(collection(db, path), data);
+}
+
+// Set a document in a collection
+export const setDocument = (path: string, data: any) => {
+  data.createdAt = serverTimestamp();
+  return setDoc(doc(db, path), data);
+}
+
+// Update a document in a collection
+export const updateDocument = (path: string, data: any) => {
+  return updateDoc(doc(db, path), data);
+}
+
+// -------Photo storage-------
+// Upload a file with base64 format and get the url
+export const uploaderBase64 = async (path: string, base64: string) => {
+  return uploadString(ref(storage, path), base64, 'data_url').then(() => {
+    return getDownloadURL(ref(storage, path))
+  })
+
 }
