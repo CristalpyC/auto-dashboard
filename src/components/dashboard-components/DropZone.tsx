@@ -14,6 +14,7 @@ export const BasicDemoDropzone: React.FC<DropZoneProps> = ({updateFiles, removeF
       value={files}
       className="mb-5"
       accept=".webp,.png,.jpg,.jpeg,.avif"
+      maxFiles={1}
     >
       {files.map((file:ExtFile) => (
           <FileMosaic key={file.id} {...file} onDelete={removeFile} info={true} />
