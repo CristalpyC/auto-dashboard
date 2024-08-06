@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { useModal } from '@/hooks/useModal';
 import { AddProductButton } from './BasicComponents';
+import { AddProductForm } from '../forms/AddProductForm';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,30 +21,6 @@ const style = {
   pb: 3,
 };
 
-function ChildModal() {
-  const [open, handleOpen, handleClose] = useModal(false); 
-
-  return (
-    <React.Fragment>
-      <AddProductButton onClick={handleOpen}>Open Child Modal</AddProductButton>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 200 }}>
-          <h2 id="child-modal-title">Text in a child modal</h2>
-          <p id="child-modal-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
-          <Button onClick={handleClose}>Close Child Modal</Button>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-}
-
 export default function AddFormModal() {
     const [open, handleOpen, handleClose] = useModal(false);
 
@@ -56,11 +33,8 @@ export default function AddFormModal() {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Text in a modal</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
+        <Box sx={{ ...style, width: '70%', border:'none', padding:5 }}>
+          <AddProductForm closeModal={handleClose}/>
         </Box>
       </Modal>
     </div>

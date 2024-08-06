@@ -23,6 +23,14 @@ const Login = () => {
   const router = useRouter();
   //const nav = router.push('/dashboard');
 
+    //data
+    const data = localStorage.getItem('userInfo');
+    let user: any;
+
+    if (data){
+      user = JSON.parse(data);
+    }
+
   const handleValidation = (values: User) => {
     const errors: ErrorValues = {};
 
@@ -59,7 +67,7 @@ const Login = () => {
                 () => setLoading(true),
                 () => setLoading(false),
                 () => setUserInfo(userInfo),
-                router.push('/dashboard')
+                router.push(`/dashboard/${user?.displayName}`)
               );        
             }}
             validate={handleValidation}

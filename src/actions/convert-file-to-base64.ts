@@ -1,4 +1,4 @@
-export const fileToBase64 = (file: File) => {
+export const fileToBase64 = (file: any) => {
     return new Promise<string>((resolve, reject) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)

@@ -1,7 +1,7 @@
 // update user photo
 import {
+  ChartColumnBigIcon,
   LogOut,
-  Settings,
   Upload,
   User,
 } from "lucide-react";
@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import Avatar from "@mui/material/Avatar";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -103,9 +104,9 @@ export function DropdownMenuDemo() {
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+          <DropdownMenuItem onClick={() => router.push(`${user?.displayName}/analytics`)}>
+            <ChartColumnBigIcon className="mr-2 h-4 w-4" />
+            <span>Analytics</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
