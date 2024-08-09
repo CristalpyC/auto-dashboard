@@ -2,7 +2,7 @@
 // Import the functions you need from the SDKs you need
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -62,6 +62,19 @@ export const setDocument = (path: string, data: any) => {
   return setDoc(doc(db, path), data);
 }
 
+export const getDocuments = async (path: string) => {
+  // Obtener la referencia de la colección usando la ruta
+  const querySnapshot = await getDocs(collection(db, path));
+
+  // Mapear los datos e incluir los UIDs de los documentos
+  const documents = querySnapshot.docs.map(doc => ({
+    id: doc.id, // product id
+    ...doc.data() // data
+  }));
+
+  return documents;
+}
+
 // Update a document in a collection
 export const updateDocument = (path: string, data: any) => {
   return updateDoc(doc(db, path), data);
@@ -73,5 +86,4 @@ export const uploaderBase64 = async (path: string, base64: string) => {
   return uploadString(ref(storage, path), base64, 'data_url').then(() => {
     return getDownloadURL(ref(storage, path))
   })
-
 }

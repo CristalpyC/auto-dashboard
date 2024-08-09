@@ -5,11 +5,18 @@ import { ExtFile } from '@files-ui/react';
 import toast, { LoaderIcon } from 'react-hot-toast';
 import { fileToBase64 } from '@/actions/convert-file-to-base64';
 import { BasicDemoDropzone } from '../dashboard-components/DropZone';
-import { addDocument } from '@/lib/firebase';
+import { addDocument, updateDocument } from '@/lib/firebase';
+import { Data } from '@/interfaces/data';
 
-
-export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
-  const data = localStorage.getItem('userInfo');
+interface UpdateProductFormProps {
+    closeModal: () => void;
+    //onClick: () => void;
+    values?: any;
+    //photoUrl: any;
+}
+  
+export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps) => {
+    const data = localStorage.getItem('userInfo');
     let user: any;
 
     if (data){
@@ -21,6 +28,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
   const [productUrl, setProductUrl] = React.useState<string>('');
   const [isLoading, setLoading] = React.useState<boolean>(false);
 
+  //onClick()
   // Upload files function
   const updateFiles = async (incommingFiles:ExtFile[]) => {
     try{
@@ -42,31 +50,27 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
 
   return (
     <Formik
-        initialValues={{ name: '', status: '', price: 0, units: 0, soldunits: 0}}
-        onSubmit={async (values, { resetForm }) => {
-            // Add the product data
-            const data = { ...values, productUrl }
-            const path = `users/${user?.uid}/products`;
-            const conditions = values.name === '' || values.status === '' || values.price === 0;
-
+        initialValues={{...values}}
+        onSubmit={async (values, { resetForm }) => {     
             try{
               setLoading(true);
+              const path = `users/${user?.uid}/products/${values.id}`;
+              delete values?.profits;
+              await updateDocument(path, values);
+              console.log(values)
 
-              if (conditions){
-                toast.error('Please fill the fields', { duration: 2500 });
-
+              if (!values){
+                toast.error('Please fill the form', { duration: 2500 });
               } else {
-                  await addDocument(path, data);
-                  closeModal();
-                  resetForm();
+                toast.success('Data has beed updated', { duration: 2500 });
               }
-              
-            } catch(error){
-              toast.error("Couldn't add the car", { duration: 2500 });
-
+            } catch(error: any){
+              //const data = values.pop
+              toast.error(`Error: ${error.message}`, { duration: 10500 });
+              console.log(values)
             } finally{
+              closeModal();
               setLoading(false);
-              toast.success("The car has been added", { duration: 2500 });
             }
         }}
     >
@@ -84,7 +88,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
             <Field className={style} type='number' placeholder='Units' name='units'/>
             <Field className={style} type='number' placeholder='Sold units' name='soldunits'/>
             <Button className="w-[100%] bg-blue-500 hover:bg-blue-700" type='submit'>
-              Add product
+              Edit product
               {isLoading ? <LoaderIcon className='ml-3'/> : null}
             </Button>
         </Form>
