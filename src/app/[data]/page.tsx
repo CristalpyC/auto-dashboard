@@ -15,7 +15,6 @@ const Dashboard = () => {
       user = JSON.parse(data);
     }
 
-    //console.log(user)
   return (
     <div id='dashboard-container'>
         <Menu>

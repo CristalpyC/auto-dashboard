@@ -2,7 +2,7 @@
 // Import the functions you need from the SDKs you need
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -78,6 +78,11 @@ export const getDocuments = async (path: string) => {
 // Update a document in a collection
 export const updateDocument = (path: string, data: any) => {
   return updateDoc(doc(db, path), data);
+}
+
+//Delete a document in a collection
+export const deleteDocument = (path: string) => {
+  return deleteDoc(doc(db, path));
 }
 
 // -------Photo storage-------

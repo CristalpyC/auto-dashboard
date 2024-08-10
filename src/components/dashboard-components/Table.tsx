@@ -13,6 +13,7 @@ import { Data } from "@/interfaces/data";
 import { Column } from "@/interfaces/table-column";
 import UpdateModal from "./UpdateFormModal";
 import { getAuth } from "firebase/auth";
+import { DeleteButton } from "./ActionButtons";
 
 const columns: Column[] = [
   { id: "productUrl", label: "Image", minWidth: 170 },
@@ -79,8 +80,6 @@ export default function ColumnGroupingTable() {
           console.log('Error parsing JSON from localStorage:', error);
         }
       }
-      //setData(processedData);
-
     } catch (error) {
       console.log("Error fetching data:", error);
 
@@ -170,6 +169,7 @@ export default function ColumnGroupingTable() {
                             column.id === "actions" ? (
                               <div className='flex gap-2 justify-end text-white'>
                                   <UpdateModal values={row}/>
+                                  <DeleteButton productId={row?.id}/>
                               </div>
                             ) : (
                               row[column.id]
@@ -178,7 +178,7 @@ export default function ColumnGroupingTable() {
                             <TableCell key={column.id} align={column.align}>
                               {column.id === "productUrl" ? (
                                 <img
-                                  src={value}
+                                  src={value ? value : "no-photopic.jpg"}
                                   alt="Product"
                                   style={{ width: "100px", height: "auto" }}
                                 />

@@ -75,7 +75,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
             <BasicDemoDropzone updateFiles={updateFiles} removeFile={removeFile} files={files} />
             <Field className={style} type='text' placeholder='Name' name='name'/>
             {/* Select */}
-            <Field as='select' className={style} defaultValue="" name='status'>
+            <Field as='select' className={style} name='status'>
               <option value="" disabled className='bg-white text-gray-300'>Status</option>
               <option value="new" className='bg-white text-gray-500'>New</option>
               <option value="used" className='bg-white text-gray-500'>Used</option>

@@ -62,13 +62,13 @@ const Login = () => {
         <Formik
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
-              handleLogin(
-                values,
-                () => setLoading(true),
-                () => setLoading(false),
-                () => setUserInfo(userInfo),
-                router.push(`/dashboard/${user?.displayName}`)
-              );        
+                handleLogin({
+                  values,
+                  setLoadingStart: () => setLoading(true),
+                  setLoadingEnd: () => setLoading(false),
+                  setUser: () => setUserInfo(userInfo),
+                  router
+                });
             }}
             validate={handleValidation}
         >

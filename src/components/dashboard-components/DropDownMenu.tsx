@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import Avatar from "@mui/material/Avatar";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { fileToBase64 } from "@/actions/convert-file-to-base64";
 import toast from "react-hot-toast";
@@ -25,7 +24,8 @@ import { getAuth, updateProfile } from "firebase/auth";
 
 export function DropdownMenuDemo() {
     const [user, setUser] = useState<any>(null);
-    
+    const info = localStorage.getItem('carsInfo');
+
     useEffect(() => {
       const data = localStorage.getItem('userInfo');
 
@@ -34,13 +34,16 @@ export function DropdownMenuDemo() {
       }
     }, [])
     
-
-    const router = useRouter();
-
     const logOut = () => {
         localStorage.removeItem('userInfo');
-        router.push('/');
-    }
+        if (info) {
+          try {
+            localStorage.removeItem('carsInfo');
+            } catch (error) {
+              console.log('Error parsing JSON from localStorage:', error);
+            }
+        }
+      }
 
     const chooseImage = async (e: any) => {
       const files = e.target.files[0];
@@ -104,16 +107,20 @@ export function DropdownMenuDemo() {
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`${user?.displayName}/analytics`)}>
-            <ChartColumnBigIcon className="mr-2 h-4 w-4" />
-            <span>Analytics</span>
-          </DropdownMenuItem>
+          <a href={`${user?.displayName}/analytics`}>
+            <DropdownMenuItem>
+              <ChartColumnBigIcon className="mr-2 h-4 w-4" />
+              Analytics
+            </DropdownMenuItem>
+          </a>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span onClick={logOut}>Log out</span>
-        </DropdownMenuItem>
+        <a href="/"  onClick={logOut}>
+          <DropdownMenuItem>
+            <LogOut className="mr-2 h-4 w-4" />
+            Log out
+          </DropdownMenuItem>
+        </a>
       </DropdownMenuContent>
     </DropdownMenu>
   );

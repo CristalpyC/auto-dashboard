@@ -37,7 +37,6 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
         const imageb = await fileToBase64(base64);
         setProductUrl(imageb);
 
-
     } catch(error){
         toast.error("Couldn't upload the photo", { duration: 2500 });
     }
@@ -56,8 +55,9 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
               setLoading(true);
               const path = `users/${user?.uid}/products/${values.id}`;
               delete values?.profits;
-              await updateDocument(path, values);
-              console.log(values)
+              const productsData = {...values, productUrl}
+              await updateDocument(path, productsData);
+              //console.log(values)
 
               if (!values){
                 toast.error('Please fill the form', { duration: 2500 });
@@ -65,9 +65,7 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
                 toast.success('Data has beed updated', { duration: 2500 });
               }
             } catch(error: any){
-              //const data = values.pop
               toast.error(`Error: ${error.message}`, { duration: 10500 });
-              console.log(values)
             } finally{
               closeModal();
               setLoading(false);
@@ -79,7 +77,7 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
             <BasicDemoDropzone updateFiles={updateFiles} removeFile={removeFile} files={files} />
             <Field className={style} type='text' placeholder='Name' name='name'/>
             {/* Select */}
-            <Field as='select' className={style} defaultValue="" name='status'>
+            <Field as='select' className={style} name='status'>
               <option value="" disabled className='bg-white text-gray-300'>Status</option>
               <option value="new" className='bg-white text-gray-500'>New</option>
               <option value="used" className='bg-white text-gray-500'>Used</option>
