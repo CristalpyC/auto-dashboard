@@ -1,4 +1,5 @@
 // update user photo
+"use client"
 import {
   ChartColumnBigIcon,
   LogOut,
@@ -16,29 +17,39 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import Avatar from "@mui/material/Avatar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { fileToBase64 } from "@/actions/convert-file-to-base64";
 import toast from "react-hot-toast";
 import { uploaderBase64 } from "@/lib/firebase";
 import { getAuth, updateProfile } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@/redux/slices/user.slice";
+import { StateProps } from "@/interfaces/state";
 
 export function DropdownMenuDemo() {
-    const [user, setUser] = useState<any>(null);
+    const dispatch = useDispatch();
+    const user = useSelector((state: StateProps ) => state.user);
+    
+    const auth = getAuth();
     const info = localStorage.getItem('carsInfo');
 
     useEffect(() => {
       const data = localStorage.getItem('userInfo');
 
       if (data){
-        setUser(JSON.parse(data));
+        dispatch(setUser(JSON.parse(data)));
       }
     }, [])
     
     const logOut = () => {
         localStorage.removeItem('userInfo');
+
         if (info) {
           try {
+            
             localStorage.removeItem('carsInfo');
+            auth.signOut();
+
             } catch (error) {
               console.log('Error parsing JSON from localStorage:', error);
             }
@@ -47,11 +58,9 @@ export function DropdownMenuDemo() {
 
     const chooseImage = async (e: any) => {
       const files = e.target.files[0];
+      const authUser = auth.currentUser;
 
       try{
-        const auth = getAuth();
-        const authUser = auth.currentUser;
-
         if (!authUser) {
           throw new Error("User is not authenticated");
         }
@@ -71,9 +80,9 @@ export function DropdownMenuDemo() {
         localStorage.setItem('userInfo', JSON.stringify(updatedUser));
 
         // Update state to trigger re-render
-        setUser(updatedUser);
-
+        dispatch(setUser(updatedUser));
       } catch(error) {
+        console.log(error)
         toast.error("Couldn't upload the photo", { duration: 2500 });
       }
     }
@@ -83,7 +92,10 @@ export function DropdownMenuDemo() {
       <DropdownMenuTrigger asChild>
         <Avatar
           alt="Remy Sharp"
-          src={user?.photoURL ? user.photoURL : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhOaaBAY_yOcJXbL4jW0I_Y5sePbzagqN2aA&s'}
+          src={
+            user?.photoURL ? user.photoURL
+            : 'unknown-user-avatar.png'
+          }
           sx={{
             width: 40,
             height: 40,

@@ -3,6 +3,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import toast from 'react-hot-toast';
 import { deleteDocument } from '@/lib/firebase';
 import Swal from 'sweetalert2'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useState } from 'react';
 
 // Edit button
 export const EditButton = ({ onClick }: { onClick: () => void}) => {

@@ -2,7 +2,7 @@
 // Import the functions you need from the SDKs you need
 import { User } from "@/interfaces/user";
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -63,8 +63,12 @@ export const setDocument = (path: string, data: any) => {
 }
 
 export const getDocuments = async (path: string) => {
+  const dbQuery = query(
+    collection(db, path),
+    orderBy("createdAt", "desc")
+  )
   // Obtener la referencia de la colección usando la ruta
-  const querySnapshot = await getDocs(collection(db, path));
+  const querySnapshot = await getDocs(dbQuery);
 
   // Mapear los datos e incluir los UIDs de los documentos
   const documents = querySnapshot.docs.map(doc => ({
@@ -91,4 +95,22 @@ export const uploaderBase64 = async (path: string, base64: string) => {
   return uploadString(ref(storage, path), base64, 'data_url').then(() => {
     return getDownloadURL(ref(storage, path))
   })
+}
+
+// Get data by status: new/used
+export const getDocumentsByStatus = async (path: string, statusName: string) => {
+  const dbQuery = query(
+    collection(db, path),
+    where("status", "==", statusName),
+    orderBy("createdAt", "desc")
+  )
+  // Obtener la referencia de la colección usando la ruta
+  const querySnapshot = await getDocs(dbQuery);
+  // Mapear los datos e incluir los UIDs de los documentos
+  const documents = querySnapshot.docs.map(doc => ({
+    id: doc.id, // product id
+    ...doc.data() // data
+  }));
+
+  return documents;
 }

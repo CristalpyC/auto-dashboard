@@ -1,6 +1,7 @@
 #forgot-passwd-container{
-    background-image: url('https://plus.unsplash.com/premium_photo-1661292112163-2710d94d6c5f?fm=jpg&w=3000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FyJTIwZGVhbGVyfGVufDB8fDB8fHww');
+    background-image: url('https://media.istockphoto.com/id/1419445205/photo/new-cars-in-showroom-interior-blurred-abstract-background.webp?b=1&s=170667a&w=0&k=20&c=GNnX7_iLiJ3FCQtCeUh-VtW6gRHh0NOavRoqkhGlH2A=');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    height: 100vh;
 }

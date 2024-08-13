@@ -16,21 +16,26 @@ export const handleLogin = async ({ values, setLoadingStart, setLoadingEnd, setU
 
     try{
       const res = await signIn(values);
+      //const userKey = res.uid; // UID es único para cada usuario en Firebase
+      
+      //localStorage.setItem(userKey, JSON.stringify(res));
+
       localStorage.setItem('userInfo', JSON.stringify(res));
       const data = localStorage.getItem('userInfo');
 
       if (data){
-        //console.log(res.providerData)
         if (res.providerData.length !== 0){
           const user = JSON.parse(data);
           toast.success(`Welcome ${user.displayName}!`, { duration: 2500 });
           router?.push(`/${user?.displayName}`)
+
         } else {
           return;
         }
       }
     } catch(error) {
       toast.error("Login failed. Please check your credentials and try again", { duration: 2500 });
+      
     } finally {
         setLoadingEnd();
     }

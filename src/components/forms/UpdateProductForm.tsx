@@ -5,8 +5,12 @@ import { ExtFile } from '@files-ui/react';
 import toast, { LoaderIcon } from 'react-hot-toast';
 import { fileToBase64 } from '@/actions/convert-file-to-base64';
 import { BasicDemoDropzone } from '../dashboard-components/DropZone';
-import { addDocument, updateDocument } from '@/lib/firebase';
-import { Data } from '@/interfaces/data';
+import { updateDocument } from '@/lib/firebase';
+import { useDispatch, useSelector } from "react-redux";
+import { setFiles } from '@/redux/slices/files.slice';
+import { setProductUrl } from '@/redux/slices/productUrl.slice';
+import { setLoading } from '@/redux/slices/loading.slice';
+import { StateProps } from '@/interfaces/state';
 
 interface UpdateProductFormProps {
     closeModal: () => void;
@@ -24,18 +28,24 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
     }
 
   const style = 'w-[100%] p-2 outline-none shadow-sm bg-blue-100 mb-3 rounded-sm';
-  const [files, setFiles] = React.useState<ExtFile[]>([]);
+  
+  const dispatch = useDispatch();
+  const files = useSelector((state: StateProps) => state.files);
+  const productUrl = useSelector((state: StateProps) => state.productUrl);
+  const isLoading = useSelector((state: StateProps) => state.isLoading);
+
+  /*const [files, setFiles] = React.useState<ExtFile[]>([]);
   const [productUrl, setProductUrl] = React.useState<string>('');
-  const [isLoading, setLoading] = React.useState<boolean>(false);
+  const [isLoading, setLoading] = React.useState<boolean>(false);*/
 
   //onClick()
   // Upload files function
   const updateFiles = async (incommingFiles:ExtFile[]) => {
     try{
-        setFiles(incommingFiles);
-        const base64 = incommingFiles[0].file;
+        dispatch(setFiles(incommingFiles));
+        const base64 = files;
         const imageb = await fileToBase64(base64);
-        setProductUrl(imageb);
+        dispatch(setProductUrl(imageb));
 
     } catch(error){
         toast.error("Couldn't upload the photo", { duration: 2500 });
@@ -44,7 +54,8 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
 
   // To remove the file
   const removeFile = (id: string | number | undefined) => {
-    setFiles(files.filter((x: ExtFile) => x.id !== id));
+    const filesFilter = files && files.filter((x: ExtFile) => x.id !== id)
+    setFiles(setFiles(filesFilter));
   };
 
   return (
@@ -52,12 +63,12 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
         initialValues={{...values}}
         onSubmit={async (values, { resetForm }) => {     
             try{
-              setLoading(true);
+              dispatch(setLoading(true));
               const path = `users/${user?.uid}/products/${values.id}`;
               delete values?.profits;
               const productsData = {...values, productUrl}
               await updateDocument(path, productsData);
-              //console.log(values)
+              //localStorage.setItem('carsInfo', JSON.stringify(productsData)); 
 
               if (!values){
                 toast.error('Please fill the form', { duration: 2500 });
@@ -74,6 +85,7 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
     >
         {/* Form component */}
         <Form className='flex flex-col justify-center items-center'>
+            <p> {productUrl}</p>
             <BasicDemoDropzone updateFiles={updateFiles} removeFile={removeFile} files={files} />
             <Field className={style} type='text' placeholder='Name' name='name'/>
             {/* Select */}

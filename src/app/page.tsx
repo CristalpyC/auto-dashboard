@@ -1,3 +1,4 @@
+"use client"
 import { About } from "@/components/home-components/About";
 import { Description } from "@/components/home-components/Description";
 import { Footer } from "@/components/home-components/Footer";

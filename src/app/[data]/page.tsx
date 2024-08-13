@@ -5,18 +5,13 @@ import TableComponent from '@/components/dashboard-components/Table';
 import './style.css';
 import { ActionComponents } from '@/components/dashboard-components/BasicComponents';
 import { DropdownMenuDemo } from '@/components/dashboard-components/DropDownMenu';
+import { Provider } from 'react-redux';
+import { store } from '@/redux/store';
 
 const Dashboard = () => {
-    //data
-    const data = localStorage.getItem('userInfo');
-    let user;
-
-    if (data){
-      user = JSON.parse(data);
-    }
-
   return (
-    <div id='dashboard-container'>
+    <Provider store={store}>
+      <div id='dashboard-container'>
         <Menu>
           <DropdownMenuDemo />
         </Menu>
@@ -24,7 +19,8 @@ const Dashboard = () => {
             <ActionComponents />
             <TableComponent />
         </div>
-    </div>
+      </div>
+    </Provider>
   )
 }
 

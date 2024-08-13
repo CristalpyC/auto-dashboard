@@ -20,9 +20,11 @@ export const Intro = () => {
           <h3 className="text-[7vmin] md:text-[5vmin] lg:text-[7vmin] font-medium">
             Dealership operations
           </h3>
-          <button onClick={() => router.push('/register')} className="text-[4vmin] md:text-[2.5vmin] lg:text-[3vmin] md:w-[15rem] lg:w-[18rem] mt-8 text-white  bg-[#6393DB] p-2 shadow-md shadow-blue-700 ease-in-out hover:scale-105 hover:bg-[#547bb5aa]">
-            Create your account
-          </button>
+          <a href="/register">
+            <button className="text-[4vmin] md:text-[2.5vmin] lg:text-[3vmin] md:w-[15rem] lg:w-[18rem] mt-8 text-white  bg-[#6393DB] p-2 shadow-md shadow-blue-700 ease-in-out hover:scale-105 hover:bg-[#547bb5aa]">
+              Create your account
+            </button>
+          </a>
         </div>
 
         <img
