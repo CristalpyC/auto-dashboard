@@ -1,7 +1,7 @@
 {/*Charts: Here I created multiple chart components */}
 
 import { CategoryScale } from "chart.js";
-import { Bar, Bubble, Line, Pie } from "react-chartjs-2";
+import { Bar, Bubble, Line, Pie, PolarArea, Scatter } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 
 Chart.register(CategoryScale);
@@ -9,6 +9,7 @@ Chart.register(CategoryScale);
 // Cars data
 const info = localStorage.getItem("carsInfo");
 const parseInfo = info && JSON.parse(info);
+console.log(parseInfo)
 
 // Analytics
 
@@ -41,7 +42,7 @@ export const PieChart = () => {
       }
 
   return (
-    <div className="w-[45%] p-2 shadow-xl">
+    <div className="w-[100%] md:w-[75%] lg:w-[45%] p-2 shadow-xl">
         <h2 className="text-[3vmin] text-center mb-3 border italic font-bold">Vehicle status</h2>
         <Pie data={pieChartData}/>  
     </div>
@@ -69,7 +70,7 @@ export const BarChart = () => {
       }
 
   return (
-    <div className="w-[45%] p-2 shadow-xl">
+    <div className="w-[100%] md:w-[75%] lg:w-[45%] p-2 shadow-xl">
         <h2 className="text-[3vmin] text-center mb-3 border italic font-bold">Highest price</h2>
         <Bar data={barChartData}/>  
     </div>
@@ -97,17 +98,46 @@ export const LineChart = () => {
       }
 
   return (
-    <div className="w-[45%] p-5 shadow-xl">
+    <div className="w-[100%] md:w-[75%] lg:w-[45%] p-5 shadow-xl">
         <h2 className="text-[3vmin] text-center mb-3 border italic font-bold">Best sellers</h2>
         <Line data={lineChartData} />  
     </div>
   )
 }
 
-{/* Bubble Chart */}
+{/* Polar Chart */}
+export const ScatterChart = () => {
+  const polarChartData = {
+      labels: parseInfo && parseInfo.map((item: { name: string }) => item.name), 
+      datasets: [
+        {
+          label: '',
+          data: parseInfo && parseInfo.map((data: { units: number }) => data.units),
+          backgroundColor: [
+            "#0939b3",
+            "#0863bd",
+            "#0095df",
+            "#81b6e8"
+          ],
+          borderColor: "black",
+          borderWidth: 2
+        }
+      ]
+    }
+
+return (
+  <div className="w-[100%] md:w-[75%] lg:w-[45%] p-2 shadow-xl">
+      <h2 className="text-[3vmin] text-center mb-3 border italic font-bold">Available units</h2>
+      <PolarArea data={polarChartData}/>  
+  </div>
+)
+}
+
+
+{/* Total sells */}
 export const TotalSells = () => {
 return (
-  <div className="p-5 mb-4 shadow-md shadow-[#0939b396] m-auto mt-11 text-center">
+  <div className="p-5 mb-7 shadow-md shadow-[#0939b396] m-auto mt-5 text-center">
       <h1 className="text-[4vmin]">Ganancia total: </h1>  
   </div>
 )
