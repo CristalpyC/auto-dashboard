@@ -129,6 +129,12 @@ export default function ColumnGroupingTable() {
           )
         )
       : [];
+    
+ // Aquí calculas el total de profits
+  const totalProfits = rows.reduce((acc: number, row: any) => {
+    return acc + row.profits;
+  }, 0);
+  //console.log(rows)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPage(newPage));
