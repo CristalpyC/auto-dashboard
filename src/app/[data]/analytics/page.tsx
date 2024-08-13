@@ -1,16 +1,20 @@
 //Analytics component
 'use client'
+import { Charts } from '@/components/analytics/Charts';
 import { DropdownMenuDemo } from '@/components/dashboard-components/DropDownMenu';
 import { Menu } from '@/components/Menu';
+import { store } from '@/redux/store';
 import React from 'react'
+import { Provider } from 'react-redux';
 
 const Analytics = () => {
   return (
-    <div>
+    <Provider store={store}>
       <Menu>
           <DropdownMenuDemo />
       </Menu>
-    </div>
+      <Charts />
+    </Provider>
   )
 }
 

@@ -5,6 +5,7 @@ import { deleteDocument } from '@/lib/firebase';
 import Swal from 'sweetalert2'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useState } from 'react';
+import { useUser } from '@/hooks/useUser';
 
 // Edit button
 export const EditButton = ({ onClick }: { onClick: () => void}) => {
@@ -20,14 +21,18 @@ export const EditButton = ({ onClick }: { onClick: () => void}) => {
 
 // Delete button
 export const DeleteButton = ({ productId }: { productId: string | undefined }) => {
-  //data
-  const data = localStorage.getItem('userInfo');
+  const userUid = useUser();
+  
   let user: any;
+  //data
+  if (userUid){
+    const data = localStorage.getItem(userUid);
 
-  if (data){
-    user = JSON.parse(data);
+    if (data){
+      user = JSON.parse(data);
+    }
   }
-
+  
   // Delete car function
   const deleteCar = async ( productId: string | undefined ) => {
     const path = `users/${user?.uid}/products/${productId}`;

@@ -21,6 +21,7 @@ import { setLoading } from "@/redux/slices/loading.slice";
 import { setPage } from "@/redux/slices/tablePages.slice";
 import { setRowsPerPage } from "@/redux/slices/rowsPage.slice";
 import { StateProps } from "@/interfaces/state";
+import { useUser } from "@/hooks/useUser";
 
 const columns: Column[] = [
   { id: "productUrl", label: "Image", minWidth: 170 },
@@ -73,41 +74,47 @@ export default function ColumnGroupingTable() {
   const safeRowsPerPage = rowsPerPage ?? 10;
 
   const dispatch = useDispatch();
+  const userUid = useUser() || "";
 
   // Function that sent data to state
   async function fetchData() {
     try {
-      const tableData = await getProductData();
-      const processedData = tableData.map((item) => {
-        return {
-          ...item,
-        };
-      });
+      if (userUid){
+        const tableData = await getProductData(userUid);
+        const processedData = tableData.map((item) => {
+          return {
+            ...item,
+          };
+        });
 
-      localStorage.setItem("carsInfo", JSON.stringify(processedData));
-      const info = localStorage.getItem("carsInfo");
+        localStorage.setItem("carsInfo", JSON.stringify(processedData));
+        const info = localStorage.getItem("carsInfo");
 
-      if (info) {
-        try {
-          const parseInfo = JSON.parse(info);
-          dispatch(setData(parseInfo));
-        } catch (error) {
-          console.log("Error parsing JSON from localStorage:", error);
+        if (info) {
+          try {
+            const parseInfo = JSON.parse(info);
+            dispatch(setData(parseInfo));
+          } catch (error) {
+            console.log("Error parsing JSON from localStorage:", error);
+          }
         }
       }
+
     } catch (error) {
       dispatch(setError("An error occurred on the server. Please check back later."));
+
     } finally {
       dispatch(setLoading(false));
     }
-  }
+}
 
   //useEffect hooks: show the info, when it's updated
   React.useEffect(() => {
-    fetchData();
-  }, [carsData]);
-
-
+    if (userUid) {
+      fetchData();
+    }
+  }, [userUid, carsData]);
+  
   const rows =
     carsData && carsData.length > 0
       ? carsData.map((i: Data) =>

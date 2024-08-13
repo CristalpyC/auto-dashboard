@@ -108,7 +108,6 @@ export const getDocumentsByStatus = async (path: string, statusName: string) => 
   const querySnapshot = await getDocs(dbQuery);
   // Mapear los datos e incluir los UIDs de los documentos
   const documents = querySnapshot.docs.map(doc => ({
-    id: doc.id, // product id
     ...doc.data() // data
   }));
 

@@ -7,9 +7,7 @@ import { LoaderIcon } from "react-hot-toast";
 import { handleLogin } from "@/actions/handleLogin";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "@/redux/slices/loading.slice";
-import { setUserInfo } from "@/redux/slices/userInfo.slice";
-import { StateProps } from "@/interfaces/state";
+import { useState } from "react";
 
 const metadata: Metadata = {
   title: "Login",
@@ -19,10 +17,7 @@ const metadata: Metadata = {
 const LoginForm = () => {
   const style = "mb-5 shadow-sm outline-none border border-black p-3";
 
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state: StateProps) => state.isLoading);
-  const userInfo = useSelector((state: StateProps) => state.userInfo);
-
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
 
   return (
@@ -39,9 +34,8 @@ const LoginForm = () => {
           onSubmit={(values) => {
             handleLogin({
               values,
-              setLoadingStart: () => dispatch(setLoading(true)),
-              setLoadingEnd: () => dispatch(setLoading(false)),
-              setUser: () => dispatch(setUserInfo(userInfo)),
+              setLoadingStart: () => setLoading(true),
+              setLoadingEnd: () => setLoading(false),
               router,
             });
           }}

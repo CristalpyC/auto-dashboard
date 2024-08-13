@@ -7,28 +7,25 @@ interface handleLoginProps {
   values: User;
   setLoadingStart: () => void;
   setLoadingEnd: () => void;
-  setUser: (res: any) => void;
   router?: ReturnType<typeof useRouter>;
 }
 
-export const handleLogin = async ({ values, setLoadingStart, setLoadingEnd, setUser, router }: handleLoginProps) => {
-    setLoadingStart();
-
+export const handleLogin = async ({ values, setLoadingStart, setLoadingEnd, router }: handleLoginProps) => {
     try{
+      setLoadingStart();
       const res = await signIn(values);
-      //const userKey = res.uid; // UID es único para cada usuario en Firebase
+      const userKey = res.uid; // UID es único para cada usuario en Firebase
       
-      //localStorage.setItem(userKey, JSON.stringify(res));
+      localStorage.setItem(userKey, JSON.stringify(res));
 
-      localStorage.setItem('userInfo', JSON.stringify(res));
-      const data = localStorage.getItem('userInfo');
+      const data = localStorage.getItem(userKey);
 
       if (data){
         if (res.providerData.length !== 0){
           const user = JSON.parse(data);
           toast.success(`Welcome ${user.displayName}!`, { duration: 2500 });
           router?.push(`/${user?.displayName}`)
-
+          setLoadingEnd();
         } else {
           return;
         }

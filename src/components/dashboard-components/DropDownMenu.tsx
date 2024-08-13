@@ -25,28 +25,31 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/slices/user.slice";
 import { StateProps } from "@/interfaces/state";
+import { useUser } from "@/hooks/useUser";
 
 export function DropdownMenuDemo() {
     const dispatch = useDispatch();
     const user = useSelector((state: StateProps ) => state.user);
-    
+    const userUid = useUser() || '';
+
     const auth = getAuth();
     const info = localStorage.getItem('carsInfo');
 
     useEffect(() => {
-      const data = localStorage.getItem('userInfo');
-
-      if (data){
-        dispatch(setUser(JSON.parse(data)));
+      if (userUid) {
+        const data = localStorage.getItem(userUid);
+        
+        if (data) {
+          dispatch(setUser(JSON.parse(data)));
+        }
       }
-    }, [])
+    }, [userUid, dispatch]);
+    
     
     const logOut = () => {
-        localStorage.removeItem('userInfo');
-
+        localStorage.removeItem(userUid);
         if (info) {
           try {
-            
             localStorage.removeItem('carsInfo');
             auth.signOut();
 
@@ -77,7 +80,7 @@ export function DropdownMenuDemo() {
         const updatedUser = {...user, photoURL: imageUrl}
 
         // Update info in local storage by adding the photo url
-        localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+        localStorage.setItem(userUid, JSON.stringify(updatedUser));
 
         // Update state to trigger re-render
         dispatch(setUser(updatedUser));

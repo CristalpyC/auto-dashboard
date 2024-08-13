@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StateProps } from '@/interfaces/state';
 import { setFiles } from '@/redux/slices/files.slice';
 import { setProductUrl } from '@/redux/slices/productUrl.slice';
-import { setLoading } from '@/redux/slices/loading.slice';
 
 
 export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
@@ -29,7 +28,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
   const [isLoading, setLoading] = React.useState<boolean>(false);*/
   const files = useSelector((state: StateProps) => state.files);
   const productUrl = useSelector((state: StateProps) => state.productUrl);
-  const isLoading = useSelector((state: StateProps) => state.isLoading);
+  const [isLoading, setLoading] = React.useState<boolean>(false);
 
   // Upload files function
   const updateFiles = async (incommingFiles:ExtFile[]) => {
@@ -38,7 +37,6 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
         const base64 = incommingFiles[0].file;
         const imageb = await fileToBase64(base64);
         dispatch(setProductUrl(imageb));
-
 
     } catch(error){
         toast.error("Couldn't upload the photo", { duration: 2500 });
@@ -61,7 +59,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
             const conditions = values.name === '' || values.status === '' || values.price === 0;
 
             try{
-              dispatch(setLoading(true));
+              setLoading(true);
 
               if (conditions){
                 toast.error('Please fill the fields', { duration: 2500 });
@@ -76,7 +74,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
               toast.error("Couldn't add the car", { duration: 2500 });
 
             } finally{
-              dispatch(setLoading(false));
+              setLoading(false);
               toast.success("The car has been added", { duration: 2500 });
             }
         }}
