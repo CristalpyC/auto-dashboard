@@ -104,9 +104,8 @@ export const getDocumentsByStatus = async (path: string, statusName: string) => 
     where("status", "==", statusName),
     orderBy("createdAt", "desc")
   )
-  // Obtener la referencia de la colección usando la ruta
+  
   const querySnapshot = await getDocs(dbQuery);
-  // Mapear los datos e incluir los UIDs de los documentos
   const documents = querySnapshot.docs.map(doc => ({
     ...doc.data() // data
   }));

@@ -1,5 +1,4 @@
 "use client";
-
 import { Title } from "@/components/Title";
 import { Field, Form, Formik } from "formik";
 import { Metadata } from "next";
@@ -8,11 +7,6 @@ import { handleLogin } from "@/actions/handleLogin";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-
-const metadata: Metadata = {
-  title: "Login",
-  description: "Login form",
-};
 
 const LoginForm = () => {
   const style = "mb-5 shadow-sm outline-none border border-black p-3";

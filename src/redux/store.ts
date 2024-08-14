@@ -8,7 +8,7 @@ import productUrlReducer from "./slices/productUrl.slice";
 import rowsPageReducer from "./slices/rowsPage.slice";
 import pageReducer from "./slices/tablePages.slice";
 import userReducer from "./slices/user.slice";
-import userInfoReducer from "./slices/userInfo.slice";
+import totalReducer from "./slices/totalsells.slice";
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +20,6 @@ export const store = configureStore({
         rowsPerPage: rowsPageReducer,
         page: pageReducer,
         user: userReducer,
-        userInfo: userInfoReducer
+        total: totalReducer
     }
 });

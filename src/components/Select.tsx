@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // Asegúrate de que estos imports son correctos
+} from "@/components/ui/select"; 
 import { getDocumentsByStatus } from "@/lib/firebase";
 import { useUser } from "@/hooks/useUser";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,24 +17,26 @@ export function SelectScrollable() {
   const userUid = useUser();
   const dispatch = useDispatch();
   const carsData = useSelector((state: StateProps) => state.carsData)
-  // Estado para manejar el valor seleccionado
-  //const [selectedValue, setSelectedValue] = React.useState<string>('');
 
   const handleChange = async (value: string) => {
-    try{
-      if (userUid){
+    try {
+      if (userUid) {
         const path = `users/${userUid}/products`;
         const data = await getDocumentsByStatus(path, value);
-        const y = data.map(item => delete item.createdAt)
-        //dispatch(setData(data));
-        console.log(y)
-        //localStorage.setItem("carsInfo", JSON.stringify(data));
+        
+        data.map(item => {
+          delete item.id;
+          delete item.createdAt;
+          return item;
+        });
+  
+        console.log("Data fetched and processed:", data);
+        dispatch(setData(data));
       }
-    } catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   return (
     <Select onValueChange={handleChange}>

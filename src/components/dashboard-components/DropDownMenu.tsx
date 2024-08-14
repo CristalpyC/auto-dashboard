@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import Avatar from "@mui/material/Avatar";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fileToBase64 } from "@/actions/convert-file-to-base64";
 import toast from "react-hot-toast";
 import { uploaderBase64 } from "@/lib/firebase";
@@ -30,18 +30,21 @@ import { useUser } from "@/hooks/useUser";
 export function DropdownMenuDemo() {
     const dispatch = useDispatch();
     const user = useSelector((state: StateProps ) => state.user);
+    const [ loading, setLoading ] = useState<boolean>(false);
     const userUid = useUser() || '';
 
     const auth = getAuth();
     const info = localStorage.getItem('carsInfo');
 
     useEffect(() => {
+      setLoading(true)
       if (userUid) {
         const data = localStorage.getItem(userUid);
         
         if (data) {
           dispatch(setUser(JSON.parse(data)));
         }
+        setLoading(false)
       }
     }, [userUid, dispatch]);
     
@@ -84,10 +87,12 @@ export function DropdownMenuDemo() {
 
         // Update state to trigger re-render
         dispatch(setUser(updatedUser));
+
       } catch(error) {
         console.log(error)
         toast.error("Couldn't upload the photo", { duration: 2500 });
-      }
+
+      } 
     }
 
   return (
@@ -96,8 +101,8 @@ export function DropdownMenuDemo() {
         <Avatar
           alt="Remy Sharp"
           src={
-            user?.photoURL ? user.photoURL
-            : 'unknown-user-avatar.png'
+            loading ? ('loading-icon-animated.gif')
+            : (user?.photoURL ? user.photoURL : 'unknown-user-avatar.png')
           }
           sx={{
             width: 40,

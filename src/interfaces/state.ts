@@ -11,4 +11,5 @@ export interface StateProps {
     page?: 0;
     user?: any;
     userInfo?: string;
+    total?: number;
 }

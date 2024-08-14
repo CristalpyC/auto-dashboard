@@ -3,6 +3,8 @@
 import { CategoryScale } from "chart.js";
 import { Bar, Bubble, Line, Pie, PolarArea, Scatter } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import { useSelector } from "react-redux";
+import { StateProps } from "@/interfaces/state";
 
 Chart.register(CategoryScale);
 
@@ -138,7 +140,7 @@ return (
 export const TotalSells = () => {
 return (
   <div className="p-5 mb-7 shadow-md shadow-[#0939b396] m-auto mt-5 text-center">
-      <h1 className="text-[4vmin]">Ganancia total: </h1>  
+      <h1 className="text-[4vmin]">Analytics</h1>  
   </div>
 )
 }

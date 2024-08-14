@@ -22,6 +22,7 @@ import { setPage } from "@/redux/slices/tablePages.slice";
 import { setRowsPerPage } from "@/redux/slices/rowsPage.slice";
 import { StateProps } from "@/interfaces/state";
 import { useUser } from "@/hooks/useUser";
+import { setTotal } from "@/redux/slices/totalsells.slice";
 
 const columns: Column[] = [
   { id: "productUrl", label: "Image", minWidth: 170 },
@@ -114,9 +115,10 @@ export default function ColumnGroupingTable() {
       fetchData();
     }
   }, [userUid, carsData]);
+
   
-  const rows =
-    carsData && carsData.length > 0
+  const rows = React.useMemo(() => {
+    return carsData && carsData.length > 0
       ? carsData.map((i: Data) =>
           createData(
             i.productUrl,
@@ -129,12 +131,7 @@ export default function ColumnGroupingTable() {
           )
         )
       : [];
-    
- // Aquí calculas el total de profits
-  const totalProfits = rows.reduce((acc: number, row: any) => {
-    return acc + row.profits;
-  }, 0);
-  //console.log(rows)
+  }, [carsData]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPage(newPage));
