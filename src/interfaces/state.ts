@@ -12,4 +12,5 @@ export interface StateProps {
     user?: any;
     userInfo?: string;
     total?: number;
+    status?: string;
 }

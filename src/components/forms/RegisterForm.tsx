@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { Title } from "@/components/Title";
 import { User } from "@/interfaces/user";
 import { ErrorValues } from "@/interfaces/errorValues";

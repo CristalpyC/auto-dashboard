@@ -1,3 +1,5 @@
+"use client"
+
 import LoginForm from "@/components/forms/LoginForm"
 import { store } from "@/redux/store"
 import { Metadata } from "next";

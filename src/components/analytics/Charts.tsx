@@ -4,14 +4,14 @@ import { BarChart, LineChart, PieChart, ScatterChart, TotalSells } from './AllCh
 export const Charts = () => {
   return (
     <div className='p-11'>
-    <TotalSells />
+      <TotalSells />
 
-    <div className='flex flex-wrap justify-center items-center mt-3 gap-4'>
+      <div className='flex flex-wrap justify-center items-center mt-3 gap-4'>
         <BarChart />
         <LineChart />
         <PieChart />
         <ScatterChart />
-    </div>
+      </div>
     </div>
   )
 }

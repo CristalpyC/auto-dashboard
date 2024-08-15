@@ -9,33 +9,17 @@ import {
 } from "@/components/ui/select"; 
 import { getDocumentsByStatus } from "@/lib/firebase";
 import { useUser } from "@/hooks/useUser";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { StateProps } from "@/interfaces/state";
-import { setData } from "@/redux/slices/data.slice";
+import { AppDispatch } from "@/redux/store";
+import { setStatus } from "@/redux/slices/status.slice";
 
 export function SelectScrollable() {
   const userUid = useUser();
-  const dispatch = useDispatch();
-  const carsData = useSelector((state: StateProps) => state.carsData)
+  const dispatch: AppDispatch = useDispatch();
 
   const handleChange = async (value: string) => {
-    try {
-      if (userUid) {
-        const path = `users/${userUid}/products`;
-        const data = await getDocumentsByStatus(path, value);
-        
-        data.map(item => {
-          delete item.id;
-          delete item.createdAt;
-          return item;
-        });
-  
-        console.log("Data fetched and processed:", data);
-        dispatch(setData(data));
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(setStatus(value));
   };
 
   return (
@@ -47,6 +31,7 @@ export function SelectScrollable() {
         <SelectGroup>
           <SelectItem value="new">New</SelectItem>
           <SelectItem value="used">Used</SelectItem>
+          <SelectItem value="all">All</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

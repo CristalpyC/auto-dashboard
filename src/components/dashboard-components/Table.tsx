@@ -22,7 +22,8 @@ import { setPage } from "@/redux/slices/tablePages.slice";
 import { setRowsPerPage } from "@/redux/slices/rowsPage.slice";
 import { StateProps } from "@/interfaces/state";
 import { useUser } from "@/hooks/useUser";
-import { setTotal } from "@/redux/slices/totalsells.slice";
+import { AppDispatch } from "@/redux/store";
+import { getDocumentsByStatus } from "@/lib/firebase";
 
 const columns: Column[] = [
   { id: "productUrl", label: "Image", minWidth: 170 },
@@ -70,34 +71,50 @@ export default function ColumnGroupingTable() {
   const carsData = useSelector((state: StateProps) => state.carsData);
   const loading = useSelector((state: StateProps) => state.isLoading);
   const error = useSelector((state: StateProps) => state.errorData);
+  const status = useSelector((state: StateProps) => state.status);
 
   const safePage = page ?? 0;
   const safeRowsPerPage = rowsPerPage ?? 10;
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const userUid = useUser() || "";
 
   // Function that sent data to state
   async function fetchData() {
     try {
       if (userUid){
-        const tableData = await getProductData(userUid);
+        if (status && status !== 'all'){
+          const path = `users/${userUid}/products`;
+          const data = await getDocumentsByStatus(path, status);
+        
+          data.map((item: any) => {
+            delete item.id;
+            delete item.createdAt;
+            return item;
+          });
+  
+          console.log("Data fetched and processed:", data);
+          dispatch(setData(data));
+
+        } else {
+          const tableData = await getProductData(userUid);
         const processedData = tableData.map((item) => {
           return {
             ...item,
           };
         });
-
+        
         localStorage.setItem("carsInfo", JSON.stringify(processedData));
         const info = localStorage.getItem("carsInfo");
 
         if (info) {
           try {
             const parseInfo = JSON.parse(info);
-            dispatch(setData(parseInfo));
+            return dispatch(setData(parseInfo));
           } catch (error) {
             console.log("Error parsing JSON from localStorage:", error);
           }
+        }
         }
       }
 
@@ -114,9 +131,8 @@ export default function ColumnGroupingTable() {
     if (userUid) {
       fetchData();
     }
-  }, [userUid, carsData]);
+  }, [carsData, userUid, status]);
 
-  
   const rows = React.useMemo(() => {
     return carsData && carsData.length > 0
       ? carsData.map((i: Data) =>

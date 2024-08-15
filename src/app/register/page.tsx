@@ -1,3 +1,5 @@
+"use client"
+
 import RegisterForm from "@/components/forms/RegisterForm";
 import { Metadata } from "next";
 

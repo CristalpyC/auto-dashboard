@@ -14,7 +14,6 @@ const parseInfo = info && JSON.parse(info);
 console.log(parseInfo)
 
 // Analytics
-
 {/* Pie chart */}
 export const PieChart = () => {
     const usedStatus = parseInfo && parseInfo.filter((data: { status: string }) => { return data.status === 'used'});

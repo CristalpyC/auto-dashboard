@@ -9,6 +9,7 @@ import rowsPageReducer from "./slices/rowsPage.slice";
 import pageReducer from "./slices/tablePages.slice";
 import userReducer from "./slices/user.slice";
 import totalReducer from "./slices/totalsells.slice";
+import statusReducer from "./slices/status.slice";
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,10 @@ export const store = configureStore({
         rowsPerPage: rowsPageReducer,
         page: pageReducer,
         user: userReducer,
-        total: totalReducer
+        total: totalReducer,
+        status: statusReducer
     }
 });
+
+export type AppDispatch = typeof store.dispatch;
+

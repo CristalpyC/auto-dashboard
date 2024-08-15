@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { Title } from "@/components/Title";
 import { Field, Form, Formik } from "formik";
 import { Metadata } from "next";
