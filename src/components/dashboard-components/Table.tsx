@@ -82,7 +82,9 @@ export default function ColumnGroupingTable() {
   // Function that sent data to state
   async function fetchData() {
     try {
+      // If userUid exist, do this action:
       if (userUid){
+        // First, see if the status change
         if (status && status !== 'all'){
           const path = `users/${userUid}/products`;
           const data = await getDocumentsByStatus(path, status);
@@ -95,14 +97,14 @@ export default function ColumnGroupingTable() {
   
           console.log("Data fetched and processed:", data);
           dispatch(setData(data));
-
+          // In case the state in null, shows all the products
         } else {
           const tableData = await getProductData(userUid);
-        const processedData = tableData.map((item) => {
-          return {
-            ...item,
-          };
-        });
+          const processedData = tableData.map((item) => {
+            return {
+              ...item,
+            };
+          });
         
         localStorage.setItem("carsInfo", JSON.stringify(processedData));
         const info = localStorage.getItem("carsInfo");
@@ -131,7 +133,8 @@ export default function ColumnGroupingTable() {
     if (userUid) {
       fetchData();
     }
-  }, [carsData, userUid, status]);
+  }, [carsData, userUid, status]); //dependencies
+
 
   const rows = React.useMemo(() => {
     return carsData && carsData.length > 0
@@ -147,7 +150,10 @@ export default function ColumnGroupingTable() {
           )
         )
       : [];
-  }, [carsData]);
+  }, [carsData]); 
+
+  const totalProfits = rows.reduce((acc: number, row: any) => acc + row.profits, 0);
+  const formatProfits = totalProfits.toLocaleString("en-US");
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPage(newPage));
@@ -252,6 +258,7 @@ export default function ColumnGroupingTable() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <p className="bg-white p-3 text-[3vmin]"><strong>Total: </strong>${formatProfits} USD</p>
               <TablePagination
                 sx={{ backgroundColor: "white" }}
                 rowsPerPageOptions={[10, 25, 100]}

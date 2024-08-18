@@ -4,7 +4,7 @@ import * as React from "react";
 export interface DropZoneProps {
   updateFiles: (incommingFiles: ExtFile[]) => Promise<void>;
   removeFile: (id: string | number | undefined) => void;
-  files: ExtFile[] | undefined;
+  files?: ExtFile[] | undefined;
 }
 
 export const BasicDemoDropzone: React.FC<DropZoneProps> = ({ updateFiles, removeFile, files }) => {

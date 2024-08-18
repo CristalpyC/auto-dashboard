@@ -1,11 +1,9 @@
-'use client'
-import { useRouter } from "next/navigation";
+"use client"
+
 import { Menu } from "../Menu";
 import { Zoom } from "react-awesome-reveal";
 
 export const Intro = () => {
-  const router = useRouter();
-
   return (
     <>
       <Menu>

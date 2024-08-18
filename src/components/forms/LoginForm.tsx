@@ -1,18 +1,14 @@
 "use client"
 import { Title } from "@/components/Title";
 import { Field, Form, Formik } from "formik";
-import { Metadata } from "next";
 import { LoaderIcon } from "react-hot-toast";
 import { handleLogin } from "@/actions/handleLogin";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
 const LoginForm = () => {
   const style = "mb-5 shadow-sm outline-none border border-black p-3";
-
   const [isLoading, setLoading] = useState(false);
-  const router = useRouter();
 
   return (
     <div className="lg:flex md:flex justify-between">
@@ -30,7 +26,6 @@ const LoginForm = () => {
               values,
               setLoadingStart: () => setLoading(true),
               setLoadingEnd: () => setLoading(false),
-              router,
             });
           }}
         >

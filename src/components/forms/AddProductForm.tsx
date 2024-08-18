@@ -23,9 +23,6 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
   const style = 'w-[100%] p-2 outline-none shadow-sm bg-blue-100 mb-3 rounded-sm';
   const dispatch = useDispatch();
 
-  /*const [files, setFiles] = React.useState<ExtFile[]>([]);
-  const [productUrl, setProductUrl] = React.useState<string>('');
-  const [isLoading, setLoading] = React.useState<boolean>(false);*/
   const files = useSelector((state: StateProps) => state.files);
   const productUrl = useSelector((state: StateProps) => state.productUrl);
   const [isLoading, setLoading] = React.useState<boolean>(false);
@@ -65,9 +62,14 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
                 toast.error('Please fill the fields', { duration: 2500 });
 
               } else {
-                  await addDocument(path, data);
-                  closeModal();
-                  resetForm();
+                  const res = await addDocument(path, data);
+                  if (!res){
+                    toast.error('An error occurs on the serve. Please check back later', { duration: 2500 });
+                    closeModal();
+                  } else {
+                    closeModal();
+                    resetForm();
+                  }
               }
               
             } catch(error){

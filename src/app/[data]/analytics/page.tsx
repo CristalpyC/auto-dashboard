@@ -1,5 +1,5 @@
+"use client"
 //Analytics component
-'use client'
 import { Charts } from '@/components/analytics/Charts';
 import { DropdownMenuDemo } from '@/components/dashboard-components/DropDownMenu';
 import { Menu } from '@/components/Menu';

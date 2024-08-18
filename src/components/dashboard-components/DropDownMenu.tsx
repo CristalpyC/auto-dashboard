@@ -37,14 +37,14 @@ export function DropdownMenuDemo() {
     const info = localStorage.getItem('carsInfo');
 
     useEffect(() => {
-      setLoading(true)
+      setLoading(true);
       if (userUid) {
         const data = localStorage.getItem(userUid);
         
         if (data) {
           dispatch(setUser(JSON.parse(data)));
         }
-        setLoading(false)
+        setLoading(false);
       }
     }, [userUid, dispatch]);
     
@@ -67,6 +67,7 @@ export function DropdownMenuDemo() {
       const authUser = auth.currentUser;
 
       try{
+        setLoading(true);
         if (!authUser) {
           throw new Error("User is not authenticated");
         }
@@ -91,8 +92,9 @@ export function DropdownMenuDemo() {
       } catch(error) {
         console.log(error)
         toast.error("Couldn't upload the photo", { duration: 2500 });
-
-      } 
+      } finally{
+        setLoading(false);
+      }
     }
 
   return (

@@ -30,6 +30,10 @@ const RegisterForm = () => {
         errors.name = "Write your name";
     } else if (!nameRegex.test(values.name)) {
         errors.name = "The name is incorrect";
+    } else if (!values.repeatPassword) {
+      errors.repeatPassword = "This field is obligatory";
+    } else if (values.repeatPassword !== values.password) {
+        errors.repeatPassword = "Passwords don't match";
     }
 
     return errors;
@@ -52,14 +56,16 @@ const RegisterForm = () => {
           linkTo="/login"
         />
         <Formik
-          initialValues={{ name: "", email: "", password: "" }}
-          onSubmit={(values) => {
+          initialValues={{ name: "", email: "", password: "", repeatPassword: "" }}
+          onSubmit={(values, { resetForm }) => {
             //handleRegister(values);
             handleRegister(
                 values,
                 () => setLoading(true),
                 () => setLoading(false)
             );
+
+            resetForm();
           }}
           validate={handleValidation}
         >
@@ -96,6 +102,18 @@ const RegisterForm = () => {
             />
             <ErrorMessage
               name="password"
+              component="div"
+              className="text-red-600 font-medium italic mb-5 mt-[-1rem]"
+            />
+
+            <Field
+              className={style}
+              placeholder="Repeat password"
+              name="repeatPassword"
+              type="password"
+            />
+            <ErrorMessage
+              name="repeatPassword"
               component="div"
               className="text-red-600 font-medium italic mb-5 mt-[-1rem]"
             />

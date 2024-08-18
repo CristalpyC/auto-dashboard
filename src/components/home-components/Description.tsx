@@ -1,4 +1,5 @@
 "use client"
+
 import { Zoom } from "react-awesome-reveal";
 import { DirectionAwareHoverDemo } from "../HoverCard";
 

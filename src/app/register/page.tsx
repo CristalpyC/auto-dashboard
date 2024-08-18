@@ -1,9 +1,7 @@
-"use client"
-
 import RegisterForm from "@/components/forms/RegisterForm";
 import { Metadata } from "next";
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "Register",
   description: "Register form",
 };

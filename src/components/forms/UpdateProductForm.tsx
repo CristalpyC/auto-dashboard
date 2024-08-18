@@ -12,10 +12,10 @@ import { StateProps } from '@/interfaces/state';
 
 interface UpdateProductFormProps {
     closeModal: () => void;
-    values?: any;
+    itemToUpdate?: any;
 }
   
-export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps) => {
+export const UpdateProductForm = ({ closeModal, itemToUpdate }: UpdateProductFormProps) => {
     const data = localStorage.getItem('userInfo');
     let user: any;
 
@@ -47,19 +47,20 @@ export const UpdateProductForm = ({ closeModal, values }: UpdateProductFormProps
   const removeFile = (id: string | number | undefined) => {
     setFiles(files.filter((x: ExtFile) => x.id !== id));
   };
+  
 
   return (
     <Formik
-        initialValues={{...values}}
-        onSubmit={async (values, { resetForm }) => {     
+        initialValues={{...itemToUpdate}}
+        onSubmit={async (itemToUpdate) => {     
             try{
               setLoading(true);
-              const path = `users/${user?.uid}/products/${values.id}`;
-              delete values?.profits;
-              const productsData = {...values, productUrl}
+              const path = `users/${user?.uid}/products/${itemToUpdate.id}`;
+              delete itemToUpdate?.profits;
+              const productsData = {...itemToUpdate, productUrl}
               await updateDocument(path, productsData);
 
-              if (!values){
+              if (!itemToUpdate){
                 toast.error('Please fill the form', { duration: 2500 });
               } else {
                 toast.success('Data has beed updated', { duration: 2500 });

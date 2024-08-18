@@ -1,4 +1,5 @@
 "use client"
+
 import { Slide } from "react-awesome-reveal";
 
 export const Services = () => {

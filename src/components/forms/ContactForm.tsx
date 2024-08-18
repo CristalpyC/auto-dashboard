@@ -1,20 +1,23 @@
 'use client'
 import { Field, Form, Formik } from "formik"
-import toast from "react-hot-toast"
+import toast, { LoaderIcon } from "react-hot-toast"
 import emailjs from '@emailjs/browser';
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export const ContactForm = () => { 
   const style ='p-2 text-[3.2vmin] shadow-sm outline-none mb-2 rounded-sm bg-[#9cc0f567]'
   const form = useRef<any>();
+  const [isLoading, setLoading] = useState(false);
 
   const sendEmail = () => {
+    setLoading(true);
     emailjs
       .sendForm('service_s1r2ohm', 'template_39fq2es', form.current, {
         publicKey: 'zNSEwNyo2G0uVyugv',
       })
       .then(
         () => {
+          setLoading(false);
           toast("Thanks! We'll reply soon", { icon: '📨' });
         },
         (error) => {
@@ -35,7 +38,15 @@ export const ContactForm = () => {
             <Field className={style} type='text' placeholder='Name' name='name' required/>
             <Field className={style} type='email' placeholder='Email' name='email' required/>
             <Field as="textarea" className={style} placeholder='Type your message here' name='message'/>
-            <button type="submit" className="bg-[#165ECA] rounded-sm shadow-sm p-2 text-[3.5vmin] text-center text-white hover:bg-[#124fab]">Submit</button>
+            <button
+              className={`bg-[#165ECA] text-[3vmin] p-3 text-white transform duration-300 ease-in-out hover:bg-[#205ab1] ${
+                isLoading ? "flex gap-2 justify-center items-center" : ""
+              }`}
+              type="submit"
+            >
+              Sign in
+              {isLoading ? <LoaderIcon /> : null}
+            </button>
         </Form>
     </Formik>
   )

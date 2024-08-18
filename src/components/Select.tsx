@@ -24,7 +24,7 @@ export function SelectScrollable() {
 
   return (
     <Select onValueChange={handleChange}>
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className="w-[50vw] mr-3  md:w-[280px] lg:w-[280px]">
         <SelectValue placeholder="Models" />
       </SelectTrigger>
       <SelectContent>

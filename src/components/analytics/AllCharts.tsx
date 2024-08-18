@@ -1,17 +1,15 @@
+"use client"
 {/*Charts: Here I created multiple chart components */}
-
 import { CategoryScale } from "chart.js";
-import { Bar, Bubble, Line, Pie, PolarArea, Scatter } from "react-chartjs-2";
+import { Bar, Line, Pie, PolarArea } from "react-chartjs-2";
 import Chart from "chart.js/auto";
-import { useSelector } from "react-redux";
-import { StateProps } from "@/interfaces/state";
 
 Chart.register(CategoryScale);
 
 // Cars data
 const info = localStorage.getItem("carsInfo");
 const parseInfo = info && JSON.parse(info);
-console.log(parseInfo)
+
 
 // Analytics
 {/* Pie chart */}
@@ -21,7 +19,6 @@ export const PieChart = () => {
     
     const totalUsedUnits = usedStatus.reduce((acc: number, item: { units: number }) => acc + item.units, 0);
     const totalNewUnits = newStatus.reduce((acc: number, item: { units: number }) => acc + item.units, 0);
-
     const statusArray = [
         {"units": totalUsedUnits},
         {"units": totalNewUnits}

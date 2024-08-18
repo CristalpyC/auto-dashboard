@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -38,7 +38,7 @@ export default function UpdateModal({ values }: UpdateModal) {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: '70%', border:'none', padding:5 }}>
-          <UpdateProductForm closeModal={handleClose} values={values}/>
+          <UpdateProductForm closeModal={handleClose} itemToUpdate={values} />
         </Box>
       </Modal>
     </div>

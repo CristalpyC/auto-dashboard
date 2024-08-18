@@ -1,7 +1,7 @@
 // Firebase functions
 // Import the functions you need from the SDKs you need
 import { User } from "@/interfaces/user";
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
@@ -20,6 +20,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -34,8 +35,7 @@ export const signIn = async (values: User) => {
 
 // Password recovering
 export const passwedRecover = async (values: { email: string} ) => {
-  const res = await sendPasswordResetEmail(auth, values.email);
-  //console.log(res)
+  await sendPasswordResetEmail(auth, values.email);
 }
 
 // Register user

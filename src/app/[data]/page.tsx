@@ -1,5 +1,5 @@
-// Dashboard page
 "use client"
+// Dashboard page
 import { Menu } from '@/components/Menu'
 import TableComponent from '@/components/dashboard-components/Table';
 import './style.css';
