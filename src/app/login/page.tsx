@@ -1,19 +1,15 @@
-import { Title } from '@/components/Title'
-import { Metadata } from 'next'
-import React from 'react'
+import LoginForm from "@/components/forms/LoginForm"
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Login',
-    description: 'Login form'
-}
+  title: "Login",
+  description: "Login form",
+};
 
 const Login = () => {
   return (
-    <div>
-        Login page
-        <Title />
-    </div>
+    <LoginForm />
   )
 }
 
-export default Login;
+export default Login
