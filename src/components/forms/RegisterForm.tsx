@@ -48,7 +48,7 @@ const RegisterForm = () => {
           alt="user"
         />
       </div>
-      <div className="lg:mt-[5rem] md:mt-[5rem] p-11 w-[100%]">
+      <div className="lg:mt-[5rem] md:mt-[3rem] p-11 w-[100%]">
         <Title
           title="Create your account"
           message="Already have an account?"
