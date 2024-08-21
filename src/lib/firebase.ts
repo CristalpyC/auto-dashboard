@@ -5,6 +5,8 @@ import { getApp, getApps, initializeApp } from "firebase/app";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
+import { GetServerSideProps } from "next";
+import { NextRequest, NextResponse } from "next/server";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,10 +22,24 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+export async function middleware(req: NextRequest) {
+  const auth = getAuth(app);
+  const user = auth.currentUser;
+  
+  // Verifica si el usuario está autenticado
+  if (!user) {
+    // Redirige a la página de login si no hay usuario autenticado
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+
+  // Si el usuario está autenticado, permite el acceso a la página
+  return NextResponse.next();
+}
+
 
 // ----- LOGIN AND REGISTER FUNCIONS -----
 // Sign in with email y password

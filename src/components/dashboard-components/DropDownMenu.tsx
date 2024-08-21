@@ -51,6 +51,7 @@ export function DropdownMenuDemo() {
     
     const logOut = () => {
         localStorage.removeItem(userUid);
+
         if (info) {
           try {
             localStorage.removeItem('carsInfo');
@@ -90,7 +91,6 @@ export function DropdownMenuDemo() {
         dispatch(setUser(updatedUser));
 
       } catch(error) {
-        console.log(error)
         toast.error("Couldn't upload the photo", { duration: 2500 });
       } finally{
         setLoading(false);
