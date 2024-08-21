@@ -10,15 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StateProps } from '@/interfaces/state';
 import { setFiles } from '@/redux/slices/files.slice';
 import { setProductUrl } from '@/redux/slices/productUrl.slice';
+import { useUser } from '@/hooks/useUser';
 
 
 export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
-  const data = localStorage.getItem('userInfo');
-    let user: any;
-
-    if (data){
-      user = JSON.parse(data);
-    }
+  const userUid = useUser();
 
   const style = 'w-[100%] p-2 outline-none shadow-sm bg-blue-100 mb-3 rounded-sm';
   const dispatch = useDispatch();
@@ -52,7 +48,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
         onSubmit={async (values, { resetForm }) => {
             // Add the product data
             const data = { ...values, productUrl }
-            const path = `users/${user?.uid}/products`;
+            const path = `users/${userUid}/products`;
             const conditions = values.name === '' || values.status === '' || values.price === 0;
 
             try{
@@ -62,7 +58,7 @@ export const AddProductForm = ({ closeModal }: { closeModal: () => void}) => {
                 toast.error('Please fill the fields', { duration: 2500 });
 
               } else {
-                  const res = await addDocument(path, data);
+                  const res = userUid && await addDocument(path, data);
                   if (!res){
                     toast.error('An error occurs on the serve. Please check back later', { duration: 2500 });
                     closeModal();

@@ -9,6 +9,7 @@ import { updateDocument } from '@/lib/firebase';
 import { useDispatch, useSelector } from "react-redux";
 import { setProductUrl } from '@/redux/slices/productUrl.slice';
 import { StateProps } from '@/interfaces/state';
+import { useUser } from '@/hooks/useUser';
 
 interface UpdateProductFormProps {
     closeModal: () => void;
@@ -16,12 +17,7 @@ interface UpdateProductFormProps {
 }
   
 export const UpdateProductForm = ({ closeModal, itemToUpdate }: UpdateProductFormProps) => {
-    const data = localStorage.getItem('userInfo');
-    let user: any;
-
-    if (data){
-      user = JSON.parse(data);
-    }
+    const userUid = useUser();
 
   const style = 'w-[100%] p-2 outline-none shadow-sm bg-blue-100 mb-3 rounded-sm';
   
@@ -55,10 +51,10 @@ export const UpdateProductForm = ({ closeModal, itemToUpdate }: UpdateProductFor
         onSubmit={async (itemToUpdate) => {     
             try{
               setLoading(true);
-              const path = `users/${user?.uid}/products/${itemToUpdate.id}`;
+              const path = `users/${userUid}/products/${itemToUpdate.id}`;
               delete itemToUpdate?.profits;
               const productsData = {...itemToUpdate, productUrl}
-              await updateDocument(path, productsData);
+              userUid && await updateDocument(path, productsData);
 
               if (!itemToUpdate){
                 toast.error('Please fill the form', { duration: 2500 });
