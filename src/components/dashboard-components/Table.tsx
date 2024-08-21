@@ -79,33 +79,29 @@ export default function ColumnGroupingTable() {
   const dispatch: AppDispatch = useDispatch();
   const userUid = useUser() || "";
 
-  // Function that sent data to state
-  async function fetchData() {
+  const fetchData = React.useCallback(async () => {
+    if (!userUid) return;
+
     try {
-      // If userUid exist, do this action:
-      if (userUid){
-        // First, see if the status change
-        if (status && status !== 'all'){
-          const path = `users/${userUid}/products`;
-          const data = await getDocumentsByStatus(path, status);
+      if (status && status !== "all") {
+        const path = `users/${userUid}/products`;
+        const data = await getDocumentsByStatus(path, status);
+
+        data.map((item: any) => {
+          delete item.id;
+          delete item.createdAt;
+          return item;
+        });
+
+        dispatch(setData(data));
         
-          data.map((item: any) => {
-            delete item.id;
-            delete item.createdAt;
-            return item;
-          });
-  
-          console.log("Data fetched and processed:", data);
-          dispatch(setData(data));
-          // In case the state in null, shows all the products
-        } else {
-          const tableData = await getProductData(userUid);
-          const processedData = tableData.map((item) => {
-            return {
-              ...item,
-            };
-          });
-        
+      } else {
+        const tableData = await getProductData(userUid);
+        const processedData = tableData.map((item: any) => ({
+          ...item,
+          createdAt: item.createdAt?.toDate().toISOString(),
+        }));
+
         localStorage.setItem("carsInfo", JSON.stringify(processedData));
         const info = localStorage.getItem("carsInfo");
 
@@ -116,25 +112,22 @@ export default function ColumnGroupingTable() {
           } catch (error) {
             console.log("Error parsing JSON from localStorage:", error);
           }
-        }
-        }
+        } //dispatch(setData(processedData));
       }
-
     } catch (error) {
-      dispatch(setError("An error occurred on the server. Please check back later."));
-
+      dispatch(
+        setError("An error occurred on the server. Please check back later.")
+      );
     } finally {
       dispatch(setLoading(false));
     }
-}
+  }, [userUid, status, dispatch]);
 
-  //useEffect hooks: show the info, when it's updated
   React.useEffect(() => {
     if (userUid) {
       fetchData();
     }
-  }, [carsData, userUid, status]); //dependencies
-
+  }, [userUid, status, carsData]);
 
   const rows = React.useMemo(() => {
     return carsData && carsData.length > 0
@@ -150,9 +143,12 @@ export default function ColumnGroupingTable() {
           )
         )
       : [];
-  }, [carsData]); 
+  }, [carsData]);
 
-  const totalProfits = rows.reduce((acc: number, row: any) => acc + row.profits, 0);
+  const totalProfits = rows.reduce(
+    (acc: number, row: any) => acc + row.profits,
+    0
+  );
   const formatProfits = totalProfits.toLocaleString("en-US");
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -258,13 +254,15 @@ export default function ColumnGroupingTable() {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <p className="bg-white p-3 text-[3vmin]"><strong>Total: </strong>${formatProfits} USD</p>
+              <p className="bg-white p-3 text-[3vmin]">
+                <strong>Total: </strong>${formatProfits} USD
+              </p>
               <TablePagination
                 sx={{ backgroundColor: "white" }}
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
                 count={rows.length}
-                rowsPerPage={safeRowsPerPage }
+                rowsPerPage={safeRowsPerPage}
                 page={safePage}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
@@ -272,7 +270,7 @@ export default function ColumnGroupingTable() {
             </Paper>
           ) : (
             <div className="p-5">
-              <Alert color="error" sx={{ padding:'2rem' }}>
+              <Alert color="error" sx={{ padding: "2rem" }}>
                 {error}
               </Alert>
             </div>
