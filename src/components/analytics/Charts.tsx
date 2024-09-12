@@ -14,12 +14,16 @@ export const Charts = () => {
         !parseInfo 
         ? <Alert color="error" sx={{ padding:'2rem' }}>Firebase server is not responding. Please check back later.</Alert>
         : 
-        <div className='flex flex-wrap justify-center items-center mt-3 gap-4'>
+        (
+          parseInfo.length === 0 ?
+          <Alert severity="info">Please add products to your inventory.</Alert>
+          : <div className='flex flex-wrap justify-center items-center mt-3 gap-4'>
           <BarChart />
           <LineChart />
           <PieChart />
           <ScatterChart />
         </div>
+        )
     }
     </div>
   )

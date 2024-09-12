@@ -7,13 +7,9 @@ import { ActionComponents } from "@/components/dashboard-components/BasicCompone
 import { DropdownMenuDemo } from "@/components/dashboard-components/DropDownMenu";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import ProtectedLayout from "@/components/ProtectedRoute";
 
 const Dashboard = () => {
-  ////const a = useUser();
- /// if (a) { console.log(a)}
   return (
-    <ProtectedLayout>
       <Provider store={store}>
         <div id="dashboard-container">
           <Menu>
@@ -25,7 +21,6 @@ const Dashboard = () => {
           </div>
         </div>
       </Provider>
-    </ProtectedLayout>
   );
 };
 
