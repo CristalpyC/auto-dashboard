@@ -12,6 +12,7 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({
   const userUid = useUser();
   const router = useRouter();
   const [hasCheckedUser, setHasCheckedUser] = useState(false);
+  console.log(userUid)
 
   useEffect(() => {
     if (userUid === null) return; 
